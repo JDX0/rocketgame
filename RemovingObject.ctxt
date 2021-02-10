@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=RemovingObject
+comment0.text=\r\n\ Class\ for\ all\ falling\ and\ removing\ objects\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=sp
+comment1.target=RemovingObject(int)
+comment2.params=
+comment2.target=int\ getSpeed()
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ Act\ -\ do\ whatever\ the\ RemovingObject\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+numComments=4
