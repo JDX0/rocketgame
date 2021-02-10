@@ -8,7 +8,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Rocket extends Actor
 {
-    private int speed;
+    private int maxSpeed;
+    private int horizontalSpeed;
+    private int verticalSpeed;
     private int distance;  //vzdálenost uletěná raketou počítaná v kilometrech
     private int consumption; //počet litrů na 100 kilometrů
     private Gun myGun;      //připojená zbraň
@@ -16,9 +18,8 @@ public class Rocket extends Actor
     
     public Rocket(int spd, int con)
     {
-     this.getImage().scale(60,30);
-     this.turn(-90);
-     this.speed = spd;
+     this.getImage().scale(200,200);
+     this.maxSpeed = spd;
      this.distance = 0;
      this.consumption = con;
      this.myGun = new Gun(5, 100); //max 5 nábojů a musí čekat 100 actů na další výstřel
@@ -36,24 +37,32 @@ public class Rocket extends Actor
     {
      if(this.tank.isEmpty())
       {
-       this.speed = 0;  
+       this.horizontalSpeed = 0; 
+       this.verticalSpeed = 0;
       }
      if(Greenfoot.isKeyDown("left"))
       {
-       this.setLocation(this.getX() - this.speed, this.getY());  
-      }else 
-       if(Greenfoot.isKeyDown("right"))
-        {
-         this.setLocation(this.getX() + this.speed, this.getY());  
-        }
-         else 
-       if(Greenfoot.isKeyDown("s"))
-        {
-          if(this.myGun.canShoot())
-           {
-            this.getWorld().addObject(new Bullet(10), this.getX(), this.getY());    
-           }
-        }
+       this.accelerateLeft();       
+      } 
+     if(Greenfoot.isKeyDown("right"))
+      {
+       this.accelerateRight();
+      }
+     if(Greenfoot.isKeyDown("up"))
+      {
+       this.accelerateUp();
+      }
+     if(Greenfoot.isKeyDown("down"))
+      {
+       this.accelerateDown();
+      }
+     if(Greenfoot.isKeyDown("s"))
+      {
+        if(this.myGun.canShoot())
+         {
+          this.getWorld().addObject(new Bullet(10), this.getX(), this.getY() - 100);    
+         }
+      }
       
     }
     /**
@@ -63,6 +72,8 @@ public class Rocket extends Actor
     public void act() 
     {
      this.control();
+     this.move();
+     
      //ochladnutí zbraně
      this.myGun.cool();
      this.distance ++;
@@ -96,8 +107,35 @@ public class Rocket extends Actor
          this.getWorld().removeObject(fuel);
         }
      }
-    
- 
+     public void move()
+     {
+         this.setLocation(this.getX() + this.horizontalSpeed, this.getY() + this.verticalSpeed);
+
+     }
+     public void accelerateRight()
+     {
+        if(this.horizontalSpeed<=this.maxSpeed){
+        this.horizontalSpeed += 1;
+        }
+     }
+     public void accelerateLeft()
+     {
+        if(this.horizontalSpeed>=this.maxSpeed * -1){
+        this.horizontalSpeed -= 1;
+        }
+     }
+     public void accelerateUp()
+     {
+        if(this.verticalSpeed>=this.maxSpeed * -1){
+        this.verticalSpeed -= 1;
+        }
+     }
+     public void accelerateDown()
+     {
+        if(this.verticalSpeed<=this.maxSpeed){
+        this.verticalSpeed += 1;
+        }
+     }
     //DU
     //Vyzkoušejte udělat to samé pro sebrání nových nábojů
     // 1. Vytvořte novou Třídu pro náboje jako RemovingObject
