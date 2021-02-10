@@ -11,5 +11,6 @@ public class Planet extends RemovingObject
     public Planet(int speed)
     {
         super(speed);
+        this.getImage().scale(200,200);
     }
 }
