@@ -20,10 +20,23 @@ public class Bullet extends Actor
      */
     public void act() 
     {
+      this.destroy();
       this.setLocation(this.getX(), this.getY()- speed);
        if(this.isAtEdge())
        {
         this.getWorld().removeObject(this); 
        } 
-    }    
+      
+    }  
+    public void destroy()
+     {
+       if(this.isTouching(Asteroid.class))
+        {
+         Asteroid asteroid = (Asteroid)this.getOneIntersectingObject(Asteroid.class);   
+         Explosion explosion = new Explosion(-1);
+         this.getWorld().addObject(explosion, asteroid.getX(), asteroid.getY());
+      //3. Odstraním Barel ze světa
+         this.getWorld().removeObject(asteroid);
+        }
+     }
 }
