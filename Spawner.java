@@ -1,23 +1,20 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * Write a description of class Spawner here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class Spawner extends Actor
-{
-    long lastAdded = System.currentTimeMillis();
-    public void act() 
-    {
-        long curTime  = System.currentTimeMillis();
-        if (curTime >= lastAdded + 250) //5000ms = 5s
-        {
-            int y = Greenfoot.getRandomNumber(100);
-            int x = Greenfoot.getRandomNumber(1366);
-            this.getWorld().addObject(new Asteroid(5),x,y);
-            lastAdded  = curTime;
+public class Spawner {
+    private int cooldown = 1;
+    private World world;
+    
+    public Spawner(World currentWorld) {
+        world = currentWorld;
+    }
+    
+    public void act() {
+        cooldown--;
+        
+        if (cooldown == 0) {
+            int x = Greenfoot.getRandomNumber(world.getWidth());
+            world.addObject(new Asteroid(5), x, 0);
+            cooldown = 15;
         }
     }    
 }

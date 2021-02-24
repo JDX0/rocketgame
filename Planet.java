@@ -11,9 +11,9 @@ public class Planet extends RemovingObject
     }
     
     public void act() {
-        super.act();
-        
         setImage(!isTouching(Rocket.class)?planetImage:litPlanetImage);
         getImage().scale(200,200);
+        
+        super.act();
     }
 }

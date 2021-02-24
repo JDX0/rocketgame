@@ -94,8 +94,8 @@ public class Rocket extends Actor{
         if (verticalSpeed > 0) { verticalSpeed -= friction; }
         if (verticalSpeed < 0) { verticalSpeed += friction; }
         
-        if (Math.abs(horizontalSpeed) <= 0.01) { horizontalSpeed = 0; }
-        if (Math.abs(verticalSpeed) <= 0.01) { verticalSpeed = 0; }
+        if (horizontalSpeed <= 0.02 && horizontalSpeed >= -0.02) { horizontalSpeed = 0; }
+        if (verticalSpeed <= 0.02 && verticalSpeed >= -0.02) { verticalSpeed = 0; }
     }
     
     public int getDistance() { return this.distance; }
