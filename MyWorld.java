@@ -46,6 +46,13 @@ public class MyWorld extends World
         Planet planet = new Planet(1);
         addObject(planet,958,162);
         planet.setLocation(980,13);
+        Spawner spawner = new Spawner();
+        addObject(spawner,644,77);
+        asteroid2.setLocation(736,112);
+        removeObject(asteroid2);
+        removeObject(asteroid4);
+        removeObject(asteroid3);
+        removeObject(asteroid);
     }
     
     public void act()

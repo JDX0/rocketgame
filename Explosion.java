@@ -14,7 +14,6 @@ public class Explosion extends Actor
     }
     public void act() 
     {
-        Greenfoot.delay(10);
         this.getWorld().removeObject(this);
     }    
 }
