@@ -33,9 +33,8 @@ public class Bullet extends Actor
        if(this.isTouching(Asteroid.class))
         {
          Asteroid asteroid = (Asteroid)this.getOneIntersectingObject(Asteroid.class);   
-         Explosion explosion = new Explosion(-1);
+         Explosion explosion = new Explosion(4);
          this.getWorld().addObject(explosion, asteroid.getX(), asteroid.getY());
-      //3. Odstraním Barel ze světa
          this.getWorld().removeObject(asteroid);
         }
      }

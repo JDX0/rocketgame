@@ -8,11 +8,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Asteroid extends RemovingObject
 {
-
+    private int rotation;
     
     public Asteroid(int sp)
     {    
-     super(sp); 
+     super(sp);
+     rotation = Greenfoot.getRandomNumber(20) - 10;
+     getImage().scale(60, 60);
     }
     /**
      * Act - do whatever the Asteroid wants to do. This method is called whenever
@@ -21,7 +23,7 @@ public class Asteroid extends RemovingObject
     public void act() 
     {
   
-     this.turn(10);
+     this.turn(rotation);
      super.act(); 
     }    
 }
