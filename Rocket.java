@@ -1,153 +1,103 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class Rocket here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class Rocket extends Actor
-{
+public class Rocket extends Actor{
     private int maxSpeed;
-    private int horizontalSpeed;
-    private int verticalSpeed;
-    private int distance;  //vzdálenost uletěná raketou počítaná v kilometrech
-    private int consumption; //počet litrů na 100 kilometrů
-    private Gun myGun;      //připojená zbraň
-    private Tank tank;  //pripojena nadrz
-    
-    public Rocket(int spd, int con)
+    private double friction;
+    private double horizontalSpeed;
+    private double verticalSpeed;
+    private double xPos = 653;
+    private double yPos = 542;
+    private int distance;
+    private int consumption;
+    private Gun myGun;
+    private Tank tank;
+
+    public Rocket(int spd, int con, double frc)
     {
-     this.getImage().scale(200,200);
-     this.maxSpeed = spd;
-     this.distance = 0;
-     this.consumption = con;
-     this.myGun = new Gun(5, 100); //max 5 nábojů a musí čekat 100 actů na další výstřel
-     this.tank = new Tank(50);  //nadrž s kapacitou 50
+        getImage().scale(200,200);
+        distance = 0;
+        
+        maxSpeed = spd;
+        friction = frc;
+        consumption = con;
+        
+        myGun = new Gun(5, 100);
+        tank = new Tank(50);
     }
-    
-    public Tank getTank()
-    {
-     return this.tank;    
-    }
-   
-    
     
     private void control()
     {
-     if(this.tank.isEmpty())
-      {
-       this.horizontalSpeed = 0; 
-       this.verticalSpeed = 0;
-      }
-     if(Greenfoot.isKeyDown("left"))
-      {
-       this.accelerateLeft();       
-      } 
-     if(Greenfoot.isKeyDown("right"))
-      {
-       this.accelerateRight();
-      }
-     if(Greenfoot.isKeyDown("up"))
-      {
-       this.accelerateUp();
-      }
-     if(Greenfoot.isKeyDown("down"))
-      {
-       this.accelerateDown();
-      }
-     if(Greenfoot.isKeyDown("s"))
-      {
-        if(this.myGun.canShoot())
-         {
-          this.getWorld().addObject(new Bullet(10), this.getX(), this.getY() - 100);    
-         }
-      }
-      
-    }
-    /**
-     * Act - do whatever the Rocket wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    public void act() 
-    {
-     this.control();
-     this.move();
-     
-     //ochladnutí zbraně
-     this.myGun.cool();
-     this.distance ++;
-     //uber nádrž
-     this.tank.consume(this.consumption / 100.0);  //!! dělím celé číslo reálným -> výsledek je reálný
-     this.takeFuel();
-     this.visitPlanet();
-    }
-    
-    public void visitPlanet()
-    {
-        if(this.isTouching(Planet.class)){
-            Planet p = (Planet)this.getOneIntersectingObject(Planet.class);
-            this.getWorld().removeObject(p);
-            Greenfoot.setWorld(new TraderWorld(this.getWorld(),this));
+        if (!tank.isEmpty()) {
+            if (Greenfoot.isKeyDown("left")) { accelerate(-1, 0); } 
+            if (Greenfoot.isKeyDown("right")) { accelerate(1, 0); } 
+            if (Greenfoot.isKeyDown("up")) { accelerate(0, -1); } 
+            if (Greenfoot.isKeyDown("down")) { accelerate(0, 1); } 
+        }
+        
+        if (Greenfoot.isKeyDown("s") && myGun.canShoot()) {
+            getWorld().addObject(new Bullet(10), getX(), getY() - 100);
         }
     }
+
+    public void act() {
+        control();
+        move();
+        slowDown();
+        
+        myGun.cool();
+        tank.consume(this.consumption / 100.0);
+        distance++;
+        
+        collide();
+    }
     
-     //
-     public void takeFuel()
-     {
-       if(this.isTouching(Fuel.class))
+    private void collide() {
+        if (isTouching(Planet.class)){
+            // Greenfoot.setWorld(new TraderWorld(getWorld(), this));
+        }
+        
+        if (isTouching(Fuel.class))
         {
-         Fuel fuel = (Fuel)this.getOneIntersectingObject(Fuel.class);   
-      //1. Doplním nádrž o hodnotu paliva v Barelu (Fuel)
-         this.tank.refuel(fuel.getCount()); 
-      //2. Zobrazím Marker informující o tom, kolik jsem vzal paliva
-         Marker marker = new Marker(fuel.getCount());
-         this.getWorld().addObject(marker, fuel.getX(), fuel.getY());
-      //3. Odstraním Barel ze světa
-         this.getWorld().removeObject(fuel);
+            Fuel fuel = (Fuel)getOneIntersectingObject(Fuel.class);   
+            // 1. Doplním nádrž o hodnotu paliva v Barelu (Fuel)
+            tank.refuel(fuel.getCount()); 
+            // 2. Zobrazím Marker informující o tom, kolik jsem vzal paliva
+            Marker marker = new Marker(fuel.getCount());
+            getWorld().addObject(marker, fuel.getX(), fuel.getY());
+            // 3. Odstraním Barel ze světa
+            getWorld().removeObject(fuel);
         }
-     }
-     public void move()
-     {
-         this.setLocation(this.getX() + this.horizontalSpeed, this.getY() + this.verticalSpeed);
-
-     }
-     public void accelerateRight()
-     {
-        if(this.horizontalSpeed<=this.maxSpeed){
-        this.horizontalSpeed += 1;
-        }
-     }
-     public void accelerateLeft()
-     {
-        if(this.horizontalSpeed>=this.maxSpeed * -1){
-        this.horizontalSpeed -= 1;
-        }
-     }
-     public void accelerateUp()
-     {
-        if(this.verticalSpeed>=this.maxSpeed * -1){
-        this.verticalSpeed -= 1;
-        }
-     }
-     public void accelerateDown()
-     {
-        if(this.verticalSpeed<=this.maxSpeed){
-        this.verticalSpeed += 1;
-        }
-     }
-    //DU
-    //Vyzkoušejte udělat to samé pro sebrání nových nábojů
-    // 1. Vytvořte novou Třídu pro náboje jako RemovingObject
-    // 2. Zobrazte je ve světě
-    // 3. implementujte "sebrání" nábojů -> zvýší se počet nábojů ve zbrani
-    
-    
-    
-
-    public int getDistance()
-    {
-     return this.distance;
     }
 
+    private void move()
+    {
+        xPos += horizontalSpeed;
+        yPos += verticalSpeed;
+
+        setLocation((int)xPos, (int)yPos);
+    }
+    
+    private void accelerate(double xAccel, double yAccel)
+    {
+        horizontalSpeed += xAccel;
+        verticalSpeed += yAccel;
+        
+        if ( horizontalSpeed >= maxSpeed ) { horizontalSpeed = maxSpeed; }
+        if ( horizontalSpeed <= -maxSpeed ) { horizontalSpeed = -maxSpeed; }
+        if ( verticalSpeed >= maxSpeed ) { verticalSpeed = maxSpeed; }
+        if ( verticalSpeed <= -maxSpeed ) { verticalSpeed = -maxSpeed; }
+    }
+    
+    private void slowDown() {
+        if (horizontalSpeed > 0) { horizontalSpeed -= friction; }
+        if (horizontalSpeed < 0) { horizontalSpeed += friction; }
+        if (verticalSpeed > 0) { verticalSpeed -= friction; }
+        if (verticalSpeed < 0) { verticalSpeed += friction; }
+        
+        if (Math.abs(horizontalSpeed) <= 0.01) { horizontalSpeed = 0; }
+        if (Math.abs(verticalSpeed) <= 0.01) { verticalSpeed = 0; }
+    }
+    
+    public int getDistance() { return this.distance; }
+    public Tank getTank() { return this.tank; }
 }

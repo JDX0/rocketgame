@@ -1,16 +1,19 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class Planet here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Planet extends RemovingObject
 {
-    public Planet(int speed)
-    {
+    private GreenfootImage planetImage = new GreenfootImage("images/planet.png");
+    private GreenfootImage litPlanetImage = new GreenfootImage("images/planet2.png");
+    
+    public Planet(int speed) {
         super(speed);
-        this.getImage().scale(200,200);
+        getImage().scale(200,200);
+    }
+    
+    public void act() {
+        super.act();
+        
+        setImage(!isTouching(Rocket.class)?planetImage:litPlanetImage);
+        getImage().scale(200,200);
     }
 }
