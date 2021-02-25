@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Debugger
+comment1.params=size
+comment1.target=Debugger(int)
+comment2.params=line\ value
+comment2.target=void\ display(int,\ java.lang.String)
+numComments=3

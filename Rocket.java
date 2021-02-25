@@ -49,6 +49,9 @@ public class Rocket extends Actor{
         distance++;
         
         collide();
+        
+        getWorld().getObjects(Debugger.class).get(0).display(0, String.valueOf(horizontalSpeed));
+        getWorld().getObjects(Debugger.class).get(0).display(1, String.valueOf(verticalSpeed));
     }
     
     private void collide() {
@@ -94,8 +97,8 @@ public class Rocket extends Actor{
         if (verticalSpeed > 0) { verticalSpeed -= friction; }
         if (verticalSpeed < 0) { verticalSpeed += friction; }
         
-        if (horizontalSpeed <= 0.02 && horizontalSpeed >= -0.02) { horizontalSpeed = 0; }
-        if (verticalSpeed <= 0.02 && verticalSpeed >= -0.02) { verticalSpeed = 0; }
+        if (Math.abs(horizontalSpeed) <= friction) { horizontalSpeed = 0; }
+        if (Math.abs(verticalSpeed) <= friction) { verticalSpeed = 0; }
     }
     
     public int getDistance() { return this.distance; }

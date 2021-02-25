@@ -11,10 +11,8 @@ public class MyWorld extends World
     private Rocket rocket;
     private InfoPanel data;
     private Spawner spawner;
-    /**
-     * Constructor for objects of class MyWorld.
-     * 
-     */
+    public Debugger debbie;
+    
     public MyWorld()
     {    
         // Create a new world with 600x800 cells with a cell size of 1x1 pixels.
@@ -28,15 +26,20 @@ public class MyWorld extends World
      * That is: create the initial objects and add them to the world.
      */
     private void prepare() {
-        rocket = new Rocket(10, 1, 0.07);
+        rocket = new Rocket(10, 1, 0.13);
         addObject(rocket,653,542);
         
         data = new InfoPanel();
         addObject(data, getWidth() / 2, 10);
         
+        debbie = new Debugger(2);
+        addObject(debbie, 10, 10);
+        
         spawner = new Spawner(this);
         
-        setPaintOrder(InfoPanel.class, Marker.class, Explosion.class, Rocket.class, Bullet.class, Fuel.class, Asteroid.class, Planet.class);
+        addObject(new StarBackground(getWidth(), getHeight()), getWidth() / 2, getHeight() / 2);
+        
+        setPaintOrder(Debugger.class, InfoPanel.class, Marker.class, Explosion.class, Rocket.class, Bullet.class, Fuel.class, Asteroid.class, Planet.class, StarBackground.class);
     }
     
     public void act() {

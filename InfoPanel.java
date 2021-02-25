@@ -1,15 +1,15 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 public class InfoPanel extends Actor
 {
     public InfoPanel()
     {
-        this.setImage(new GreenfootImage("Raketa", 16, Color.BLACK, Color.WHITE));
+        setImage(new GreenfootImage("Raketa", 16, Color.WHITE, new Color(0, 0, 0, 0)));
     }
     
     public void write(String s)
     {
-        this.setImage(new GreenfootImage(s, 16, Color.BLACK, Color.WHITE));
+        setImage(new GreenfootImage(s, 16, Color.WHITE, new Color(0, 0, 0, 0)));
     }
 
 }
