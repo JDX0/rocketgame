@@ -1,12 +1,13 @@
 #BlueJ class context
 comment0.target=Gun
-comment0.text=\n\ Write\ a\ description\ of\ class\ Gun\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
-comment1.params=maxAmmo\ cooldown
-comment1.target=Gun(int,\ int)
+comment1.params=maxAmmo\ cooldown\ godMode
+comment1.target=Gun(int,\ int,\ boolean)
 comment2.params=
 comment2.target=void\ cool()
-comment2.text=\n\ Ochlad\u00ED\ zbran\ o\ 1\n
 comment3.params=
 comment3.target=boolean\ canShoot()
-comment3.text=\n\ Vyst\u0159el\u00ED\ n\u00E1boj\ a\ zah\u0159eje\ zbra\u0148\n\ \n
-numComments=4
+comment4.params=
+comment4.target=int\ getAmmo()
+comment5.params=
+comment5.target=int\ getMaxAmmo()
+numComments=6

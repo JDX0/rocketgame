@@ -1,38 +1,27 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * Write a description of class MyWorld here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class MyWorld extends World
-{
+public class MyWorld extends World {
     private Rocket rocket;
     private InfoPanel data;
     private Spawner spawner;
     public Debugger debbie;
+    private int overCooldown = 50;
     
-    public MyWorld()
-    {    
-        // Create a new world with 600x800 cells with a cell size of 1x1 pixels.
+    public boolean godMode = false;
+    
+    public MyWorld() {    
         super(1366, 768, 1); 
         prepare();
-        
     }
 
-    /**
-     * Prepare the world for the start of the program.
-     * That is: create the initial objects and add them to the world.
-     */
     private void prepare() {
-        rocket = new Rocket(10, 1, 0.13);
-        addObject(rocket,653,542);
+        rocket = new Rocket(20, 1, 0.13, 0.5, godMode);
+        addObject(rocket, 653, 542);
         
         data = new InfoPanel();
         addObject(data, getWidth() / 2, 10);
         
-        debbie = new Debugger(2);
+        debbie = new Debugger(4);
         addObject(debbie, 10, 10);
         
         spawner = new Spawner(this);
@@ -43,7 +32,15 @@ public class MyWorld extends World
     }
     
     public void act() {
-        data.write("Distance: " + rocket.getDistance() + "km" + " Fuel: " + rocket.getTank().getActFuel());
+        data.write("Distance: " + rocket.getDistance() + "km" + " Fuel: " + rocket.getTank().getActFuel() + " Ammo: " + (godMode?"Infinite":rocket.getGun().getAmmo()));
         spawner.act();
+        
+        if (getObjects(Rocket.class).size() == 0) {
+            overCooldown--;
+        }
+        
+        if (overCooldown == 0) {
+            Greenfoot.setWorld(new GameOverScreen());
+        }
     }
 }

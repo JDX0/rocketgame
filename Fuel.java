@@ -1,28 +1,14 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * Write a description of class Fuel here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class Fuel extends RemovingObject
-{
-    private int capacity; //kolik nese paliva
-
+public class Fuel extends RemovingObject{
+    private int capacity;
     
-    public Fuel(int c, int sp)
-    {
-     super(sp);   
-     this.capacity = c;
-
+    public Fuel(int c, int sp) {
+        super(sp);   
+        this.capacity = c;
     }
     
-    public int getCount()
-    {
-     return this.capacity;
+    public int getCount() {
+        return this.capacity;
     }
-    
-     
- 
 }

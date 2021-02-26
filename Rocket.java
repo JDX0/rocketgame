@@ -1,4 +1,5 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+ 
+import greenfoot.*;
 
 public class Rocket extends Actor{
     private int maxSpeed;
@@ -7,35 +8,41 @@ public class Rocket extends Actor{
     private double verticalSpeed;
     private double xPos = 653;
     private double yPos = 542;
+    private double acceleration;
     private int distance;
     private int consumption;
+    private boolean godMode;
     private Gun myGun;
     private Tank tank;
 
-    public Rocket(int spd, int con, double frc)
-    {
-        getImage().scale(200,200);
+    public Rocket(int spd, int con, double frc, double acc, boolean god) {
+        getImage().scale(100, 100);
         distance = 0;
         
         maxSpeed = spd;
         friction = frc;
         consumption = con;
+        acceleration = acc;
         
-        myGun = new Gun(5, 100);
-        tank = new Tank(50);
+        godMode = god;
+        
+        myGun = new Gun(5, (god)?2:20, god);
+        tank = new Tank(10);
     }
     
-    private void control()
-    {
+    private void control() {
         if (!tank.isEmpty()) {
-            if (Greenfoot.isKeyDown("left")) { accelerate(-1, 0); } 
-            if (Greenfoot.isKeyDown("right")) { accelerate(1, 0); } 
-            if (Greenfoot.isKeyDown("up")) { accelerate(0, -1); } 
-            if (Greenfoot.isKeyDown("down")) { accelerate(0, 1); } 
+            if (Greenfoot.isKeyDown("left") || Greenfoot.isKeyDown("a")) { accelerate(-acceleration, 0); } 
+            if (Greenfoot.isKeyDown("right") || Greenfoot.isKeyDown("d")) { accelerate(acceleration, 0); } 
+            if (Greenfoot.isKeyDown("up") || Greenfoot.isKeyDown("w")) { accelerate(0, -acceleration); } 
+            if (Greenfoot.isKeyDown("down") || Greenfoot.isKeyDown("s")) { accelerate(0, acceleration); } 
         }
         
-        if (Greenfoot.isKeyDown("s") && myGun.canShoot()) {
-            getWorld().addObject(new Bullet(10), getX(), getY() - 100);
+        if ((Greenfoot.isKeyDown("space") || Greenfoot.isKeyDown("enter")) && myGun.canShoot()) {
+            getWorld().addObject(new Bullet(10), getX(), getY());
+            if (isTouching(Planet.class)) {
+                Greenfoot.setWorld(new TraderWorld(getWorld(), this));
+            }
         }
     }
 
@@ -48,40 +55,64 @@ public class Rocket extends Actor{
         tank.consume(this.consumption / 100.0);
         distance++;
         
-        collide();
+        getWorld().getObjects(Debugger.class).get(0).display(0, String.valueOf("X speed: " + horizontalSpeed));
+        getWorld().getObjects(Debugger.class).get(0).display(1, String.valueOf("Y speed: " + verticalSpeed));
+        getWorld().getObjects(Debugger.class).get(0).display(2, String.valueOf("X position: " + xPos));
+        getWorld().getObjects(Debugger.class).get(0).display(3, String.valueOf("Y position: " + yPos));
         
-        getWorld().getObjects(Debugger.class).get(0).display(0, String.valueOf(horizontalSpeed));
-        getWorld().getObjects(Debugger.class).get(0).display(1, String.valueOf(verticalSpeed));
+        collide();
     }
     
     private void collide() {
-        if (isTouching(Planet.class)){
-            // Greenfoot.setWorld(new TraderWorld(getWorld(), this));
-        }
-        
-        if (isTouching(Fuel.class))
-        {
-            Fuel fuel = (Fuel)getOneIntersectingObject(Fuel.class);   
-            // 1. Doplním nádrž o hodnotu paliva v Barelu (Fuel)
-            tank.refuel(fuel.getCount()); 
-            // 2. Zobrazím Marker informující o tom, kolik jsem vzal paliva
+        if (isTouching(Fuel.class)) {
+            Fuel fuel = (Fuel)getOneIntersectingObject(Fuel.class);
+            tank.refuel(fuel.getCount());
             Marker marker = new Marker(fuel.getCount());
             getWorld().addObject(marker, fuel.getX(), fuel.getY());
-            // 3. Odstraním Barel ze světa
             getWorld().removeObject(fuel);
+        }
+        
+        if (isTouching(Asteroid.class)) {
+            Asteroid asteroid = (Asteroid)getOneIntersectingObject(Asteroid.class);
+            
+            getWorld().addObject(new Explosion(5), asteroid.getX(), asteroid.getY());
+            
+            if (!godMode) {
+                getWorld().removeObject(this);
+            } else {
+                getWorld().removeObject(asteroid);
+            }
         }
     }
 
-    private void move()
-    {
+    private void move() {
         xPos += horizontalSpeed;
         yPos += verticalSpeed;
+        
+        if (xPos < 0) {
+            xPos = 0;
+            if (horizontalSpeed < 0) { horizontalSpeed = -horizontalSpeed; }
+        }
+        
+        if (yPos < 0) {
+            yPos = 0;
+            if (verticalSpeed < 0) { verticalSpeed = -verticalSpeed; }
+        }
+        
+        if (xPos > getWorld().getWidth()) {
+            xPos = getWorld().getWidth();
+            if (horizontalSpeed > 0) { horizontalSpeed = -horizontalSpeed; }
+        }
+        
+        if (yPos > getWorld().getHeight()) {
+            yPos = getWorld().getHeight();
+            if (verticalSpeed > 0) { verticalSpeed = -verticalSpeed; }
+        }
 
         setLocation((int)xPos, (int)yPos);
     }
     
-    private void accelerate(double xAccel, double yAccel)
-    {
+    private void accelerate(double xAccel, double yAccel) {
         horizontalSpeed += xAccel;
         verticalSpeed += yAccel;
         
@@ -101,6 +132,7 @@ public class Rocket extends Actor{
         if (Math.abs(verticalSpeed) <= friction) { verticalSpeed = 0; }
     }
     
-    public int getDistance() { return this.distance; }
-    public Tank getTank() { return this.tank; }
+    public int getDistance() { return distance; }
+    public Tank getTank() { return tank; }
+    public Gun getGun() { return myGun; }
 }

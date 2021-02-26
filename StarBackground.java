@@ -19,7 +19,7 @@ public class StarBackground extends Actor {
         
         image.setColor(Color.WHITE);
         for (int i = 0; i < stars.size(); i++) {
-            image.fillOval((int)stars.get(i)[0], (int)stars.get(i)[1], (int)(stars.get(i)[2] * 5), (int)(stars.get(i)[2] * 5));
+            image.fillOval((int)(stars.get(i)[0] - stars.get(i)[2] * 2.5), (int)(stars.get(i)[1] - stars.get(i)[2] * 2.5), (int)(stars.get(i)[2] * 5), (int)(stars.get(i)[2] * 5));
             stars.get(i)[1] += stars.get(i)[2];
             
             if (stars.get(i)[1] > image.getHeight()) {
