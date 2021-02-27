@@ -1,6 +1,6 @@
 import greenfoot.*;
 
-public class Fuel extends RemovingObject{
+public class Fuel extends RemovingObject {
     private int capacity;
     
     public Fuel(int c, int sp) {
@@ -8,7 +8,5 @@ public class Fuel extends RemovingObject{
         this.capacity = c;
     }
     
-    public int getCount() {
-        return this.capacity;
-    }
+    public int getCount() { return this.capacity; }
 }

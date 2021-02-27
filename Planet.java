@@ -1,7 +1,6 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-public class Planet extends RemovingObject
-{
+public class Planet extends RemovingObject {
     private GreenfootImage planetImage = new GreenfootImage("images/planet.png");
     private GreenfootImage litPlanetImage = new GreenfootImage("images/planet2.png");
     

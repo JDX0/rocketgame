@@ -29,5 +29,7 @@ public class StarBackground extends Actor {
         }
         
         setImage(image);
+        
+        getWorld().getObjects(Debugger.class).get(0).display(4, String.valueOf("Number of stars: " + stars.size()));
     }
 }

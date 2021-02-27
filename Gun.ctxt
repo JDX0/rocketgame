@@ -1,13 +1,9 @@
 #BlueJ class context
 comment0.target=Gun
-comment1.params=maxAmmo\ cooldown\ godMode
-comment1.target=Gun(int,\ int,\ boolean)
+comment1.params=gunMode\ rocket
+comment1.target=Gun(int,\ Rocket)
 comment2.params=
 comment2.target=void\ cool()
 comment3.params=
-comment3.target=boolean\ canShoot()
-comment4.params=
-comment4.target=int\ getAmmo()
-comment5.params=
-comment5.target=int\ getMaxAmmo()
-numComments=6
+comment3.target=void\ shoot()
+numComments=4

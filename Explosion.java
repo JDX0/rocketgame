@@ -2,8 +2,9 @@ import greenfoot.*;
 
 public class Explosion extends RemovingObject
 {
-    public Explosion(int sp) {    
+    public Explosion(int sp, int size) {    
         super(sp); 
+        getImage().scale(size, size);
     }
     
     public void act() {

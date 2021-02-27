@@ -5,9 +5,7 @@ public class Debugger extends Actor {
     private ArrayList<String> debugInfo = new ArrayList<String>();
     
     public Debugger(int size) {
-        for (int i = 0; i < size; i++) {
-            debugInfo.add("");
-        }
+        for (int i = 0; i < size; i++) { debugInfo.add(""); }
     }
     
     public void display(int line, String value) {

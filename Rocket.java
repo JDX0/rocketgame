@@ -1,4 +1,3 @@
- 
 import greenfoot.*;
 
 public class Rocket extends Actor{
@@ -12,6 +11,8 @@ public class Rocket extends Actor{
     private int distance;
     private int consumption;
     private boolean godMode;
+    private boolean isDead = false;
+    private int gunType = 0;
     private Gun myGun;
     private Tank tank;
 
@@ -26,41 +27,62 @@ public class Rocket extends Actor{
         
         godMode = god;
         
-        myGun = new Gun(5, (god)?2:20, god);
-        tank = new Tank(10);
-    }
-    
-    private void control() {
-        if (!tank.isEmpty()) {
-            if (Greenfoot.isKeyDown("left") || Greenfoot.isKeyDown("a")) { accelerate(-acceleration, 0); } 
-            if (Greenfoot.isKeyDown("right") || Greenfoot.isKeyDown("d")) { accelerate(acceleration, 0); } 
-            if (Greenfoot.isKeyDown("up") || Greenfoot.isKeyDown("w")) { accelerate(0, -acceleration); } 
-            if (Greenfoot.isKeyDown("down") || Greenfoot.isKeyDown("s")) { accelerate(0, acceleration); } 
+        int gunMode;
+        if (godMode) {
+            gunMode = 1;
+        } else if (gunType == 1) {
+            gunMode = 2;
+        } else {
+            gunMode = 0;
         }
         
-        if ((Greenfoot.isKeyDown("space") || Greenfoot.isKeyDown("enter")) && myGun.canShoot()) {
-            getWorld().addObject(new Bullet(10), getX(), getY());
-            if (isTouching(Planet.class)) {
-                Greenfoot.setWorld(new TraderWorld(getWorld(), this));
-            }
-        }
+        myGun = new Gun(gunMode, this);
+        tank = new Tank(15);
     }
 
     public void act() {
+        // Movement
         control();
         move();
         slowDown();
+        collide();
         
+        // Gun & Tank
         myGun.cool();
-        tank.consume(this.consumption / 100.0);
+        if (!godMode) { tank.consume(consumption / 100.0); }
         distance++;
         
+        // Display
+        if (!godMode) { ((MyWorld)getWorld()).loadie.display(myGun.counter, myGun.cooldown, this); }
+        
+        // Debugger
         getWorld().getObjects(Debugger.class).get(0).display(0, String.valueOf("X speed: " + horizontalSpeed));
         getWorld().getObjects(Debugger.class).get(0).display(1, String.valueOf("Y speed: " + verticalSpeed));
         getWorld().getObjects(Debugger.class).get(0).display(2, String.valueOf("X position: " + xPos));
         getWorld().getObjects(Debugger.class).get(0).display(3, String.valueOf("Y position: " + yPos));
         
-        collide();
+        // Die
+        if (isDead) {
+            getWorld().removeObject(this);
+        }
+    }
+    
+    private void control() {
+        if (!tank.isEmpty() || godMode) {
+            if (Greenfoot.isKeyDown("left") || Greenfoot.isKeyDown("a")) { accelerate(-acceleration, 0); } 
+            if (Greenfoot.isKeyDown("right") || Greenfoot.isKeyDown("d")) { accelerate(acceleration, 0); } 
+            if (Greenfoot.isKeyDown("up") || Greenfoot.isKeyDown("w")) { accelerate(0, -acceleration); } 
+            if (Greenfoot.isKeyDown("down") || Greenfoot.isKeyDown("s")) { accelerate(0, acceleration); } 
+        } else {
+            getWorld().addObject(new Explosion(5, 100), getX(), getY());
+            isDead = true;
+        }
+        
+        if (Greenfoot.isKeyDown("space") || Greenfoot.isKeyDown("enter")) {
+            myGun.shoot();
+            
+            if (isTouching(Planet.class)) { Greenfoot.setWorld(new TraderWorld(getWorld(), this)); }
+        }
     }
     
     private void collide() {
@@ -75,11 +97,13 @@ public class Rocket extends Actor{
         if (isTouching(Asteroid.class)) {
             Asteroid asteroid = (Asteroid)getOneIntersectingObject(Asteroid.class);
             
-            getWorld().addObject(new Explosion(5), asteroid.getX(), asteroid.getY());
-            
             if (!godMode) {
-                getWorld().removeObject(this);
+                isDead = true;
+                for (int i = 0; i < 5; i++) {
+                    getWorld().addObject(new Explosion(5, 100 + Greenfoot.getRandomNumber(150)), getX() + Greenfoot.getRandomNumber(200) - 100, getY() + Greenfoot.getRandomNumber(200) - 100);
+                }
             } else {
+                getWorld().addObject(new Explosion(5, 100 + Greenfoot.getRandomNumber(150)), asteroid.getX(), asteroid.getY());
                 getWorld().removeObject(asteroid);
             }
         }

@@ -1,37 +1,43 @@
 public class Gun {
-    private int maxAmmo;
-    private int currAmmo;
-    private int cooldown;
-    private int counter;
-    private boolean godMode;
+    public int maxAmmo = 1;
+    public int currAmmo;
+    public int cooldown;
+    public int counter;
+    public boolean isAmmoInfinite = false;
+    private int gunMode;
+    private Rocket rocket;
     
-    public Gun(int maxAmmo, int cooldown, boolean godMode) {
-        this.maxAmmo = maxAmmo;
-        this.cooldown = cooldown;
+    public Gun(int gunMode, Rocket rocket) {
+        switch (gunMode) {
+            case 0:
+                cooldown = 20;
+                maxAmmo = 5;
+                break;
+            case 1:
+                cooldown = 2;
+                isAmmoInfinite = true;
+                break;
+            case 2:
+                cooldown = 100;
+                isAmmoInfinite = true;
+                break;
+        }
+        
         this.currAmmo = maxAmmo;
         this.counter = 0;
-        this.godMode = godMode;
+        this.gunMode = gunMode;
+        this.rocket = rocket;
     }
     
-    public void cool() {
-        counter --;  
-    }
+    public void cool() { counter--; }
       
-    public boolean canShoot() {
+    public void shoot() {
         if (currAmmo > 0 && counter <= 0) {
-            if (!godMode) { currAmmo --; }
             counter = cooldown;
-            return true;    
-        } else {
-            return false;  
+            
+            if (!isAmmoInfinite) { currAmmo--; }
+            
+            rocket.getWorld().addObject(new Bullet(gunMode), rocket.getX(), rocket.getY());
         }
-    }
-    
-    public int getAmmo() {
-        return currAmmo;
-    }
-    
-    public int getMaxAmmo() {
-        return maxAmmo;
     }
 }

@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=FuelDisplay
+comment1.params=value\ max
+comment1.target=void\ display(double,\ double)
+numComments=2

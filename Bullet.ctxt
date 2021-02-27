@@ -1,11 +1,9 @@
 #BlueJ class context
 comment0.target=Bullet
-comment0.text=\n\ Class\ for\ bullet\ od\ rocket\u00B4s\ gun\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
-comment1.params=speed
+comment1.params=type
 comment1.target=Bullet(int)
 comment2.params=
 comment2.target=void\ act()
-comment2.text=\n\ Act\ -\ do\ whatever\ the\ Bullet\ wants\ to\ do.\ This\ method\ is\ called\ whenever\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\n
 comment3.params=
 comment3.target=void\ destroy()
 numComments=4

@@ -13,10 +13,10 @@ public class Spawner {
         
         if (cooldown == 0) {
             int x = Greenfoot.getRandomNumber(world.getWidth());
-            if (Math.random() < 0.99) {
-                world.addObject(new Asteroid(5), x, 0);
+            if (Math.random() < 0.97) {
+                world.addObject(new Asteroid(5, Greenfoot.getRandomNumber(60) + 40), x, 0);
             } else {
-                world.addObject(new Fuel(2, 5), x, 0);
+                world.addObject(new Fuel(3, 5), x, 0);
             }
             cooldown = Greenfoot.getRandomNumber(29) + 1;
         }

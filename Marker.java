@@ -1,19 +1,12 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * Write a description of class Marker here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class Marker extends Actor
-{
+public class Marker extends Actor {
     private int num;
     private int speed = 0;
     
     public Marker(int num) {
          this.num = num;
-         this.setImage(new GreenfootImage("+"+num, 20, Color.RED, new Color(0, 0, 0, 0)));
+         this.setImage(new GreenfootImage("+" + num, 20, Color.RED, new Color(0, 0, 0, 0)));
     }
     
     public void act() {

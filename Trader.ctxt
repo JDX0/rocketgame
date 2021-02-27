@@ -1,12 +1,9 @@
 #BlueJ class context
 comment0.target=Trader
-comment0.text=\n\ Write\ a\ description\ of\ class\ Trader\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
 comment1.params=question\ job
 comment1.target=Trader(java.lang.String,\ int)
 comment2.params=
 comment2.target=java.lang.String\ getQuestion()
 comment3.params=response
 comment3.target=void\ setResponse(java.lang.String)
-comment4.params=
-comment4.target=void\ act()
-numComments=5
+numComments=4
