@@ -63,6 +63,7 @@ public class Rocket extends Actor{
         
         // Die
         if (isDead) {
+            getWorld().removeObjects(getWorld().getObjects(Enemy.class));
             getWorld().removeObject(this);
         }
     }

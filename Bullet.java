@@ -15,6 +15,9 @@ public class Bullet extends Actor {
             case 2:
                 speed = 15;
                 setImage(ray);
+            case 3:
+                speed = -10;
+                setImage(ray);
         }
     }
     

@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Enemy
+comment1.params=spd\ con\ frc\ acc\ god
+comment1.target=Enemy(int,\ int,\ double,\ double,\ boolean)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ control()
+comment4.params=
+comment4.target=void\ move()
+comment5.params=xAccel\ yAccel
+comment5.target=void\ accelerate(double,\ double)
+comment6.params=
+comment6.target=void\ slowDown()
+comment7.params=
+comment7.target=int\ getDistance()
+comment8.params=
+comment8.target=EnemyGun\ getGun()
+numComments=9

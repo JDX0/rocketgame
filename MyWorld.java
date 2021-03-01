@@ -2,6 +2,7 @@ import greenfoot.*;
 
 public class MyWorld extends World {
     private Rocket rocket;
+    private Enemy enemy;
     private InfoPanel data;
     private Spawner spawner;
     private FuelDisplay fuelie;
@@ -19,6 +20,8 @@ public class MyWorld extends World {
     private void prepare() {
         rocket = new Rocket(20, 1, 0.13, 0.5, godMode);
         addObject(rocket, 653, 542);
+        enemy = new Enemy(15, 3, 0.13, 0.6, godMode);
+        addObject(enemy, 653, 200);
         
         data = new InfoPanel();
         addObject(data, getWidth() / 2, 10);
@@ -36,7 +39,7 @@ public class MyWorld extends World {
         
         addObject(new StarBackground(getWidth(), getHeight()), getWidth() / 2, getHeight() / 2);
         
-        setPaintOrder(Debugger.class, InfoPanel.class, FuelDisplay.class, ReloadDisplay.class, Marker.class, Explosion.class, Rocket.class, Bullet.class, Fuel.class, Asteroid.class, Planet.class, StarBackground.class);
+        setPaintOrder(Debugger.class, InfoPanel.class, FuelDisplay.class, ReloadDisplay.class, Marker.class, Explosion.class,Enemy.class, Rocket.class, Bullet.class, Fuel.class, Asteroid.class, Planet.class, StarBackground.class);
     }
     
     public void act() {
